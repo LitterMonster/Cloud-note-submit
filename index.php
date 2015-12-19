@@ -20,8 +20,8 @@
     <header>
       <div class="inner">
         <h1>云笔记</h1>
-        <h2>Let's note anywhere.</h2>
-        <a href="https://github.com/legalese-io/" class="button"><small>View project on</small> GitHub</a>
+        <h2>Let's note any time.</h2>
+        <a href="https://github.com/LitterMonster/Cloud-note-submit" class="button"><small>View project on</small> GitHub</a>
       </div>
     </header>
 
