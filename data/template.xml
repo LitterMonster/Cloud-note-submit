@@ -1,0 +1,8 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<bbs>
+  <message>
+    <name>$1</name>
+    <mail>$2</mail>
+    <content>$3</content>
+  </message>
+</bbs>
