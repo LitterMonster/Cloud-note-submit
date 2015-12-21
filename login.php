@@ -1,7 +1,7 @@
 <?php
 //这里的username就是学号sno
 $username = $_POST['username'];
-$password = $_POST['password'];
+$password = md5($_POST['password']);
 
 //连接数据库
 $con = mysql_connect("localhost", "root", "12345678") 

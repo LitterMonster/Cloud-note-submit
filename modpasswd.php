@@ -91,8 +91,8 @@ else{return true;}"/></td></tr>
 <?php
 } else {
     $sno = $_COOKIE['username'];
-    $passwd_old = $_POST['passwd_old'];
-    $passwd_new1 = $_POST['passwd_new1'];
+    $passwd_old = md5($_POST['passwd_old']);
+    $passwd_new1 = md5($_POST['passwd_new1']);
 
     //连接数据库
     $con = mysql_connect("localhost", "root", "12345678") 
