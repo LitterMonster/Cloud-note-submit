@@ -8,8 +8,9 @@
 
   $doc = new DOMDocument();
   $doc->formatOutput = true;
+  $filename = "data/".$_COOKIE['username'].".xml";
 
-  if( $doc->load('data/bbs.xml') ){
+  if( $doc->load($filename) ){
     $deleteMessage = $doc->getElementsByTagName('message')->item((int)$_GET['a']);
     $picture = $deleteMessage->getElementsByTagName("picture")->item(0);
     $picture = avoid($picture->nodeValue);
@@ -18,8 +19,8 @@
         unlink("upload_file/$picture");
     }
     $deleteMessage = $doc->documentElement->removeChild($deleteMessage);
-    $doc->save('data/bbs.xml');
+    $doc->save($filename);
   }
   
-  echo "<meta http-equiv='refresh' content='0;index.php'/>";
+  echo "<meta http-equiv='refresh' content='0;home.php'/>";
 ?>

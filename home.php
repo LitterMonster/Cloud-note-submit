@@ -21,7 +21,7 @@ if(empty($_COOKIE['username']))
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
       <![endif]-->
 
-      <title>云笔记-新建笔记</title>
+      <title>云笔记-主页</title>
   </head>
 
   <body>
@@ -39,7 +39,7 @@ if(empty($_COOKIE['username']))
           <li><a href="home.php">主目录</a></li>
           <!--
           <li>
-            <a target="_blank" href="tutorials.html">Tutorials <span class="arrow">&#9660;</span></a>
+            <a target="_blank" href="tutorials.html">导航<span class="arrow">&#9660;</span></a>
 
             <ul class="sub-menu">
               <li> <a href="tutorials.html#t1">the EULA</a></li>
@@ -57,6 +57,7 @@ if(empty($_COOKIE['username']))
           <li><a href="modpasswd.php">修改密码</a></li>
           <li><a href="about.php">关于</a></li>
           <li><a href="logout.php">退出系统</a></li>
+          <!--<li><a href="turing.html">Turing-Complete Contracts</a></li>-->
         </ul>
       </nav>
     </div>
@@ -64,74 +65,104 @@ if(empty($_COOKIE['username']))
     <div id="content-wrapper">
       <div class="inner clearfix">
         <section id="main-content">
-<?php
-if( $_GET['mode'] == "edit"){
-    echo "<h1>编辑笔记</h1>";
-    $doc = new DOMDocument();
-    $filename = "data/".$_COOKIE['username'].".xml";
 
-    if( $doc->load($filename) ){
-        $editMessage = $doc->getElementsByTagName('message')
-            ->item((int)$_GET['a']);
-        $name = $editMessage->getElementsByTagName('name')
-            ->item(0)->nodeValue;
-        $content = $editMessage->getElementsByTagName('content')
-            ->item(0)->nodeValue;
-        $picture = $editMessage->getElementsByTagName('picture')
-            ->item(0)->nodeValue;
+          <h1>笔记详情</h1>
+<?php
+function avoid($value)
+{
+    $value = str_replace("<", "&lt;", $value);
+    $value = str_replace(">", "&gt;", $value);
+    $value = nl2br($value);
+    return $value;
+}
+echo "<table border = '1' class = 'bbs'>";
+echo "<tr><th style = 'width: 20%'>标题</th>
+    <th style = 'width: 30%'>图片</th>
+    <th style = 'width: 30%'>
+    內容</th><th style = 'width: 10%'>日期</th><th>操作</th></tr>";
+$doc = new DOMDocument();
+
+$dirname = "upload_file/".$_COOKIE['username'];
+if (!file_exists($dirname))
+{
+    mkdir($dirname);
+    chmod($dirname, 0777);
+    if(!copy("upload_file/no_pic.jpg", "upload_file/".$_COOKIE['username'].
+        "/no_pic.jpg"))
+    {
+        echo "Unable to copy no_pic.jpg!";
+        die;
+    } else {
+        chmod("upload_file/".$_COOKIE['username']."/no_pic.jpg", 0666);
     }
 }
-else echo "<h1>新建笔记</h1>";
+
+$filename = "data/".$_COOKIE['username'].".xml";
+if (!file_exists($filename))
+{
+    $userxml = fopen($filename, "w") or die("Unable to open file!");
+    fwrite($userxml, "<?xml version='1.0'?>");
+    fclose($userxml);
+    chmod($filename, 0666);
+}
+$count = 0;
+if( $doc->load($filename) ){
+    $messages = $doc->getElementsByTagName('message');
+    $count = 0;
+
+    foreach( $messages as $message ){
+
+        $name = $message->getElementsByTagName("name")->item(0);
+        $content = $message->getElementsByTagName("content")->item(0);
+        $time = $message->getElementsByTagName("time")->item(0);
+        $picture = $message->getElementsByTagName("picture")->item(0);
+
+        $name = avoid($name->nodeValue);
+        $content = avoid($content->nodeValue);
+        $time = avoid($time->nodeValue);
+        $picture = avoid($picture->nodeValue);
+
+        echo "<tr><td> $name </td>";
+        echo "<td><a href='$dirname/$picture'>
+            <img src='$dirname/$picture' width='100%'/></a></td>";
+        echo "<td>" . $content . "</td>";
+        echo "<td>" . date("l dS \of F Y h:i:s A", $time) . "</td>";
+        echo "<td><a href = 'write.php?mode=edit&a=".$count."'>编辑</a>
+            <br/><a href = 'delete.php?a=".$count."'>刪除</a>";
+
+        $count++;
+    }
+}
+if ($count == 0)
+{
+    echo "<tr><td colspan='5'>当前无笔记！</td></tr>";
+}
+echo "</table>";
 ?>
-      <br/>
-      <div>
-      <form action = "process.php?old_pic=<?=$picture?>" method = "post" enctype="multipart/form-data">
-            <strong>标题：</strong><br/><input type = "text" name = "name1"
- value = "<?php echo $name; ?>" size='70%'/><br/>
-            <strong>内容：</strong><br/><textarea name = "content" style
- = "width: 580px; height: 200px;"><?php echo $content; ?></textarea><br/>
-            <strong>图片:</strong></br>
-<?php
-if (!empty($picture) && $picture != "no_pic.jpg")
-    echo "<a href='upload_file/".$_COOKIE['username']."/$picture'><img src='upload_file/".$_COOKIE['username']."/$picture' width='805px'/></a>"
-?>
-<input type="file" name="file"/>
-<input type="reset" name="res" value="重置"/></br>
-<br/>
-<?php 
-    if( $_GET['mode'] == "edit" ){ 
-        echo '<input type = "hidden" name = "mode" value = "edit">'; 
-        echo '<input type = "hidden" name = "a" value = "'. 
-            $_GET['a'] .'">'; 
-    }  
-?>
-            <button type = "submit" name="sub" onclick="
-                if(name1.value.length==0 && content.value.length ==0)
-                {alert('标题和内容不能都为空！');return false;}else{return true;}">完成</button>
-        </form>
-      </div>
+
 
         </section>
 
         <aside id="sidebar">
           <a href="home.php" class="button">
             <small>View all notes</small>
-            查看笔记
+查看笔记
           </a>
         <aside id="sidebar">
           <a href="write.php" class="button">
             <small>Create new note</small>
-            新建笔记
+新建笔记
           </a>
         <aside id="sidebar">
           <a href="search.php" class="button">
             <small>Search notes</small>
-            搜索笔记
+搜索笔记
           </a>
 
         </aside>
       </div>
     </div>
+
 
   </body>
 </html>

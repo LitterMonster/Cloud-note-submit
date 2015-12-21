@@ -1,3 +1,11 @@
+<?php
+if(empty($_COOKIE['username']))
+{
+    echo "<script>alert('请先登陆！')</script>";
+    echo "<meta http-equiv='refresh' content='0;index.html'/>";
+    die;
+}
+?>
 <!DOCTYPE html>
 <html>
   <head>
@@ -13,22 +21,22 @@
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
       <![endif]-->
 
-      <title>云笔记</title>
+      <title>云笔记-搜索笔记</title>
   </head>
 
   <body>
     <header>
       <div class="inner">
         <h1>云笔记</h1>
-        <h2>Let's note anywhere.</h2>
-        <a href="https://github.com/LitterMonster/Cloud-note-submit" class="button"><small>View project on</small> GitHub</a>
+        <h2>Let's note any time.</h2>
+    <a href="#" class="button"><small>当前用户:</small><?=$_COOKIE['turename']?></a>
       </div>
     </header>
 
     <div class="menu-wrap">
       <nav class="menu">
         <ul class="clearfix">
-          <li><a href="index.php">主目录</a></li>
+          <li><a href="home.php">主目录</a></li>
           <!--
           <li>
             <a target="_blank" href="tutorials.html">导航<span class="arrow">&#9660;</span></a>
@@ -46,7 +54,9 @@
           -->
           <li><a href="write.php">新建笔记</a></li>
           <li><a href="search.php">搜索笔记</a></li>
-          <li><a href="about.html">关于</a></li>
+          <li><a href="modpasswd.php">修改密码</a></li>
+          <li><a href="about.php">关于</a></li>
+          <li><a href="logout.php">退出系统</a></li>
           <!--<li><a href="turing.html">Turing-Complete Contracts</a></li>-->
         </ul>
       </nav>
@@ -80,7 +90,7 @@ if (empty($_GET)) {
 
     $doc = new DOMDocument();
 
-    if( $doc->load('data/bbs.xml') ) {
+    if( $doc->load("data/".$_COOKIE['username'].".xml") ) {
         $messages = $doc->getElementsByTagName('message');
     }
 
@@ -117,7 +127,7 @@ if (empty($_GET)) {
             $count++;
             echo "<tr><td> $name </td>";
             echo "<td><a href='upload_file/$picture'>
-                <img src='upload_file/$picture' width='100%'/></a></td>";
+                <img src='upload_file/".$_COOKIE['username']."/$picture' width='100%'/></a></td>";
             echo "<td>" . $content . "</td>";
             echo "<td>" . $time . "</td>";
             echo "<td><a href = 'write.php?mode=edit&a=".$count."'>编辑</a>
@@ -133,6 +143,12 @@ if (empty($_GET)) {
 }
 ?>
         </section>
+
+        <aside id="sidebar">
+          <a href="home.php" class="button">
+            <small>View all notes</small>
+查看笔记
+          </a>
 
         <aside id="sidebar">
           <a href="write.php" class="button">

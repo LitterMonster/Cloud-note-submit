@@ -1,7 +1,9 @@
 <?php
 $doc = new DOMDocument();
 $doc->formatOutput = true;
-if( $doc->load('data/bbs.xml') ){
+
+$xmlfile = "data/".$_COOKIE['username'].".xml";
+if( $doc->load($xmlfile) ){
     $root = $doc->getElementsByTagName('bbs')->item(0);
 }
 else{
@@ -11,7 +13,7 @@ else{
 
 $message = $doc->createElement('message');
 $name = $doc->createElement('name');
-$name->appendChild($doc->createTextNode($_POST['name']));
+$name->appendChild($doc->createTextNode($_POST['name1']));
 $timestamp = time();
 $time = $doc->createElement('time');
 $time->appendChild($doc->createTextNode($timestamp));
@@ -31,7 +33,8 @@ if (isset($_POST['sub']))
             echo "上传文件有误:".$_FILES["file"]["error"]."<br/>";
             die;
         } else {
-            if(move_uploaded_file($tmp_name, "./upload_file/$filename")){
+            if(move_uploaded_file($tmp_name, 
+                "./upload_file/".$_COOKIE['username']."/$filename")){
                 //echo "$filename上传成功!";
             } else {
                 echo $filename."上传失败";
@@ -67,6 +70,6 @@ else{
     $message = $root->appendChild($message);
 }
 
-$doc->save('data/bbs.xml');
-echo "<meta http-equiv='refresh' content='0;index.php'/>";
+$doc->save($xmlfile);
+echo "<meta http-equiv='refresh' content='0;home.php'/>";
 ?>

@@ -21,7 +21,7 @@ if(empty($_COOKIE['username']))
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
       <![endif]-->
 
-      <title>云笔记-新建笔记</title>
+      <title>云笔记-修改密码</title>
   </head>
 
   <body>
@@ -39,7 +39,7 @@ if(empty($_COOKIE['username']))
           <li><a href="home.php">主目录</a></li>
           <!--
           <li>
-            <a target="_blank" href="tutorials.html">Tutorials <span class="arrow">&#9660;</span></a>
+            <a target="_blank" href="tutorials.html">导航<span class="arrow">&#9660;</span></a>
 
             <ul class="sub-menu">
               <li> <a href="tutorials.html#t1">the EULA</a></li>
@@ -57,6 +57,7 @@ if(empty($_COOKIE['username']))
           <li><a href="modpasswd.php">修改密码</a></li>
           <li><a href="about.php">关于</a></li>
           <li><a href="logout.php">退出系统</a></li>
+          <!--<li><a href="turing.html">Turing-Complete Contracts</a></li>-->
         </ul>
       </nav>
     </div>
@@ -64,69 +65,84 @@ if(empty($_COOKIE['username']))
     <div id="content-wrapper">
       <div class="inner clearfix">
         <section id="main-content">
-<?php
-if( $_GET['mode'] == "edit"){
-    echo "<h1>编辑笔记</h1>";
-    $doc = new DOMDocument();
-    $filename = "data/".$_COOKIE['username'].".xml";
 
-    if( $doc->load($filename) ){
-        $editMessage = $doc->getElementsByTagName('message')
-            ->item((int)$_GET['a']);
-        $name = $editMessage->getElementsByTagName('name')
-            ->item(0)->nodeValue;
-        $content = $editMessage->getElementsByTagName('content')
-            ->item(0)->nodeValue;
-        $picture = $editMessage->getElementsByTagName('picture')
-            ->item(0)->nodeValue;
+<?php
+if (empty($_POST)) {
+    echo "<h1>修改密码</h1>";
+?>
+  <form method='post' action='modpasswd.php'>
+  <table  border = '1'>
+<tr><td>原密码:</td><td><input type="password" name="passwd_old"
+placeholder="请输入原密码" align="left" size='60'/></td></tr>
+<tr><td>新密码:</td><td><input type="password" name="passwd_new1"
+placeholder="请输入新密码" align="left" size='60'/></td></tr>
+<tr><td>确认密码:</td><td><input type="password" name="passwd_new2"
+placeholder="请确认新密码" align="left" size='60'/></td></tr>
+<tr><td colspan="2"><input type="submit" value="确认修改" onclick="
+if(passwd_old.value.length==0){alert('旧密码不能为空!');return false;}
+else if(passwd_new1.value.length==0 || passwd_new2.value.length == 0){
+    alert('新密码不能为空!');return false;}else if
+        (passwd_new1.value!=passwd_new2.value){alert
+        ('两次密码不一样，请重新输入!');return false;}
+else{return true;}"/></td></tr>
+</table>
+  </form>
+<hr/>
+<?php
+} else {
+    $sno = $_COOKIE['username'];
+    $passwd_old = $_POST['passwd_old'];
+    $passwd_new1 = $_POST['passwd_new1'];
+
+    //连接数据库
+    $con = mysql_connect("localhost", "root", "12345678") 
+        or die("Could not connect!");
+    mysql_select_db("cloud_note_db", $con);
+
+    mysql_query('set names utf8');
+    $result = mysql_query("SELECT * FROM user WHERE sno = '$sno'");
+
+    $statue = 0;
+    while($row = mysql_fetch_array($result))
+    {
+        if($row['password'] == $passwd_old)
+        {
+            $statue = 1;
+            break;
+        }
     }
-}
-else echo "<h1>新建笔记</h1>";
-?>
-      <br/>
-      <div>
-      <form action = "process.php?old_pic=<?=$picture?>" method = "post" enctype="multipart/form-data">
-            <strong>标题：</strong><br/><input type = "text" name = "name1"
- value = "<?php echo $name; ?>" size='70%'/><br/>
-            <strong>内容：</strong><br/><textarea name = "content" style
- = "width: 580px; height: 200px;"><?php echo $content; ?></textarea><br/>
-            <strong>图片:</strong></br>
-<?php
-if (!empty($picture) && $picture != "no_pic.jpg")
-    echo "<a href='upload_file/".$_COOKIE['username']."/$picture'><img src='upload_file/".$_COOKIE['username']."/$picture' width='805px'/></a>"
-?>
-<input type="file" name="file"/>
-<input type="reset" name="res" value="重置"/></br>
-<br/>
-<?php 
-    if( $_GET['mode'] == "edit" ){ 
-        echo '<input type = "hidden" name = "mode" value = "edit">'; 
-        echo '<input type = "hidden" name = "a" value = "'. 
-            $_GET['a'] .'">'; 
-    }  
-?>
-            <button type = "submit" name="sub" onclick="
-                if(name1.value.length==0 && content.value.length ==0)
-                {alert('标题和内容不能都为空！');return false;}else{return true;}">完成</button>
-        </form>
-      </div>
 
+    if($statue == 0)
+    {
+        echo "<script>alert('旧密码错误,禁止修改密码！')</script>";
+        echo "<meta http-equiv='refresh' content='0;modpasswd.php'/>";
+        die;
+    } else {
+        mysql_query("UPDATE user SET password = '$passwd_new1' 
+            WHERE sno = '$sno'");
+        echo "<script>alert('密码修改成功!')</script>";
+        echo "<meta http-equiv='refresh' content='0;modpasswd.php'/>";
+    }
+    mysql_close($con);
+}
+?>
         </section>
 
         <aside id="sidebar">
           <a href="home.php" class="button">
             <small>View all notes</small>
-            查看笔记
+查看笔记
           </a>
+
         <aside id="sidebar">
           <a href="write.php" class="button">
             <small>Create new note</small>
-            新建笔记
+新建笔记
           </a>
         <aside id="sidebar">
           <a href="search.php" class="button">
             <small>Search notes</small>
-            搜索笔记
+搜索笔记
           </a>
 
         </aside>
