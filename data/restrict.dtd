@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-<!ELEMENT notes (message+)>
-<!ELEMENT message(name,time,content,picture)>
-<!ELEMENT name(#PCDATA)>
-<!ELEMENT time(#PCDATA)>
-<!ELEMENT content(#PCDATA)>
-<!ELEMENT picture(#PCDATA)>
-
