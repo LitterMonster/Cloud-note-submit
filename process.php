@@ -4,10 +4,10 @@ $doc->formatOutput = true;
 
 $xmlfile = "data/".$_COOKIE['username'].".xml";
 if( $doc->load($xmlfile) ){
-    $root = $doc->getElementsByTagName('bbs')->item(0);
+    $root = $doc->getElementsByTagName('notes')->item(0);
 }
 else{
-    $root = $doc->createElement('bbs');
+    $root = $doc->createElement('notes');
     $root = $doc->appendChild($root);
 }
 
@@ -60,7 +60,7 @@ $time = $message->appendChild($time);
 $content = $message->appendChild($content);
 $picture = $message->appendChild($picture);
 
-if( $_POST['mode'] == "edit" ){
+if ( $_POST['mode'] == "edit" ) {
     $replaceMessage = $doc->getElementsByTagName('message')
         ->item((int)$_POST['a']);
     $replaceMessage = $replaceMessage->parentNode->replaceChild

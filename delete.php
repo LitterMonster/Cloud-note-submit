@@ -16,7 +16,12 @@
     $picture = avoid($picture->nodeValue);
     if ($picture != "no_pic.jpg")
     {
-        unlink("upload_file/$picture");
+        if (unlink("upload_file/".$_COOKIE['username']."/$picture") == false)
+        {
+            echo "<meta charset='utf-8'>";
+            echo "<script>alert('笔记删除错误！')</script>";
+            echo "<meta http-equiv='refresh' content='0;home.html'/>";
+        }
     }
     $deleteMessage = $doc->documentElement->removeChild($deleteMessage);
     $doc->save($filename);

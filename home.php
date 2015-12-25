@@ -37,27 +37,17 @@ if(empty($_COOKIE['username']))
       <nav class="menu">
         <ul class="clearfix">
           <li><a href="home.php">主目录</a></li>
-          <!--
-          <li>
-            <a target="_blank" href="tutorials.html">导航<span class="arrow">&#9660;</span></a>
-
-            <ul class="sub-menu">
-              <li> <a href="tutorials.html#t1">the EULA</a></li>
-              <li> <a href="tutorials.html#t2">Hello, World!</a></li>
-              <li> <a href="tutorials.html#t3">Send for Signature!</a></li>
-              <li> <a href="tutorials.html#t4">A Real Nondisclosure Agreement</a></li>
-              <li> <a href="tutorials.html#t5">What Docsets Are Available?</a></li>
-              <li> <a href="tutorials.html#t6">Generating Multiple Documents &ndash; Incorporation</a></li>
-              <li> <a href="tutorials.html#t7">Developing Your Own Templates</a></li>
-            </ul>
-          </li>
-          -->
           <li><a href="write.php">新建笔记</a></li>
           <li><a href="search.php">搜索笔记</a></li>
-          <li><a href="modpasswd.php">修改密码</a></li>
-          <li><a href="about.php">关于</a></li>
-          <li><a href="logout.php">退出系统</a></li>
-          <!--<li><a href="turing.html">Turing-Complete Contracts</a></li>-->
+          <li>
+            <a href="#">设置<span class="arrow">&#9660;</span></a>
+
+            <ul class="sub-menu">
+              <li> <a href="modpasswd.php">修改密码</a></li>
+              <li> <a href="about.php">关于网站</a></li>
+              <li> <a href="logout.php">退出系统</a></li>
+            </ul>
+          </li>
         </ul>
       </nav>
     </div>
@@ -101,7 +91,8 @@ $filename = "data/".$_COOKIE['username'].".xml";
 if (!file_exists($filename))
 {
     $userxml = fopen($filename, "w") or die("Unable to open file!");
-    fwrite($userxml, "<?xml version='1.0'?>");
+    fwrite($userxml, 
+"<?xml version='1.0'?>\n<!DOCTYPE notes SYSTEM 'restrict.dtd'>\n<notes></notes>");
     fclose($userxml);
     chmod($filename, 0666);
 }
