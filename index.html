@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+      <![endif]-->
+
+      <title>云笔记-登陆</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>云笔记</h1>
+        <h2>Let's note any time.</h2>
+        <a href="https://github.com/LitterMonster/Cloud-note-submit" class="button"><small>View project on</small> GitHub</a>
+      </div>
+    </header>
+    <header>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+      <div class="inner">
+        <form action="login.php" method="post">
+          <table width="200" align="center">
+        </br>
+            <tr>
+              <td width="150" ><h3 align="right">用户名:</h3></td><td width="100" align="left"><input type="text" name="username" size="50" placeholder='请输入学号登陆'/></td>
+            </tr>
+            <tr>
+              <td width="150"><h3 align="right">密 码:</h3></td><td width="100"align="left" > <input type="password" name="password" size="50" placeholder='请输入密码'/></td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <h3><button onclick="if(username.value.length==0){
+                            alert('用户名不能为空!');return false;}
+                            else if(password.value.length==0){
+                            alert('密码不能为空!');return false;}
+                            else{return true;}">登 陆</button></h3>
+              </td>
+            </tr>
+          </table>
+        </form>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+    </header>
+  </body>
+</html>
