@@ -62,14 +62,16 @@ if(empty($_COOKIE['username']))
         <section id="main-content">
 
 <?php
-if (empty($_GET)) {
-    echo "<h1>搜索笔记</h1>";
+    if (empty($_GET)) {
+        echo "<h1>搜索笔记</h1>";
 ?>
   <form method='get' action='search.php'>
   <table  border = '1'>
     <tbody>
     <div>关键字:<input type = 'text' name = 'keyword' value='' size = '60'
-         placeholder='标题或内容关键字/日期'/><button  type = 'submit' onclick="if(keyword.value.length==0){alert('搜索内容不能为空!');return false;}else{return true;}">查找</button>
+         placeholder='标题或内容关键字/日期'/><button  type = 'submit' 
+onclick="if(keyword.value.length==0){alert('搜索内容不能为空!');
+return false;}else{return true;}">查找</button>
 </div><hr/>
     </tbody>
   </table>
@@ -132,7 +134,7 @@ if (empty($_GET)) {
 
     if ($count == 0)
     {
-        echo "<tr><td colspan='5'>未搜索到符合条件的笔记！</td></tr>";
+        echo "<tr><td colspan='5'>未搜索到关于'$keyword'的笔记！</td></tr>";
     }
     echo "</table>";
 }

@@ -72,7 +72,7 @@ if (isset($_POST['sub']))
 {
     if (!empty($_FILES["file"]["name"]))
     {
-        $filename=$timestamp;
+        $filename=$timestamp."_share";
         $filename.=strrchr($_FILES["file"]["name"],".");//上传文件的名称
 
         $tmp_name = $_FILES["file"]["tmp_name"];
