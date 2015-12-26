@@ -36,12 +36,17 @@ if(empty($_COOKIE['username']))
     <div class="menu-wrap">
       <nav class="menu">
         <ul class="clearfix">
-          <li><a href="home.php">主目录</a></li>
-          <li><a href="write.php">新建笔记</a></li>
-          <li><a href="search.php">搜索笔记</a></li>
+          <li>
+            <a href="share.php">分享中心<span class="arrow">&#9660;</span></a>
+            <ul class="sub-menu">
+              <li> <a href="share_mng.php">分享管理</a></li>
+            </ul>
+          </li>
+              <li><a href="home.php">我的笔记</a></li>
+              <li><a href="write.php">新建笔记</a></li>
+              <li><a href="search.php">搜索笔记</a></li>
           <li>
             <a href="#">设置<span class="arrow">&#9660;</span></a>
-
             <ul class="sub-menu">
               <li> <a href="modpasswd.php">修改密码</a></li>
               <li> <a href="about.php">关于网站</a></li>

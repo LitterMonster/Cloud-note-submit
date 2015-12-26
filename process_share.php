@@ -50,7 +50,7 @@ if( $share_doc->load($sharefile) ){
 $doc = new DOMDocument();
 $doc->formatOutput = true;
 
-$xmlfile = "data/".$_COOKIE['username'].".xml";
+$xmlfile = "data/share.xml";
 if( $doc->load($xmlfile) ){
     $root = $doc->getElementsByTagName('notes')->item(0);
 }
@@ -102,12 +102,18 @@ if (isset($_POST['sub']))
 //添加图片
 $picture = $doc->createElement('picture');
 $picture->appendChild($doc->createTextNode($filename)); 
+$author = $doc->createElement('author');
+$author->appendChild($doc->createTextNode($_COOKIE['turename'])); 
+$stuid = $doc->createElement('stuid');
+$stuid->appendChild($doc->createTextNode($_COOKIE['username'])); 
 
 $name = $message->appendChild($name);
 $time = $message->appendChild($time);
 $content = $message->appendChild($content);
 $picture = $message->appendChild($picture);
-
+$author = $message->appendChild($author);
+$stuid = $message->appendChild($stuid);
+/*
 if ($state == true)
 {
     //var_dump($_POST);
@@ -155,7 +161,7 @@ if ($state == true)
 
     $doc->save($sharefile);
 }
-
+ */
 if ( $_POST['mode'] == "edit" ) {
     $replaceMessage = $doc->getElementsByTagName('message')
         ->item((int)$_POST['a']);
@@ -167,5 +173,5 @@ else{
 }
 
 $doc->save($xmlfile);
-echo "<meta http-equiv='refresh' content='0;home.php'/>";
+echo "<meta http-equiv='refresh' content='0;share_mng.php'/>";
 ?>

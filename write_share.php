@@ -21,7 +21,7 @@ if(empty($_COOKIE['username']))
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
       <![endif]-->
 
-      <title>云笔记-新建笔记</title>
+      <title>云笔记-编辑分享笔记</title>
   </head>
 
   <body>
@@ -36,17 +36,12 @@ if(empty($_COOKIE['username']))
     <div class="menu-wrap">
       <nav class="menu">
         <ul class="clearfix">
-          <li>
-            <a href="share.php">分享中心<span class="arrow">&#9660;</span></a>
-            <ul class="sub-menu">
-              <li> <a href="share_mng.php">分享管理</a></li>
-            </ul>
-          </li>
-              <li><a href="home.php">我的笔记</a></li>
-              <li><a href="write.php">新建笔记</a></li>
-              <li><a href="search.php">搜索笔记</a></li>
+          <li><a href="home.php">主目录</a></li>
+          <li><a href="write.php">新建笔记</a></li>
+          <li><a href="search.php">搜索笔记</a></li>
           <li>
             <a href="#">设置<span class="arrow">&#9660;</span></a>
+
             <ul class="sub-menu">
               <li> <a href="modpasswd.php">修改密码</a></li>
               <li> <a href="about.php">关于网站</a></li>
@@ -62,9 +57,9 @@ if(empty($_COOKIE['username']))
         <section id="main-content">
 <?php
 if( $_GET['mode'] == "edit"){
-    echo "<h1>编辑笔记</h1>";
+    echo "<h1>编辑分享笔记</h1>";
     $doc = new DOMDocument();
-    $filename = "data/".$_COOKIE['username'].".xml";
+    $filename = "data/share.xml";
 
     if( $doc->load($filename) ){
         $editMessage = $doc->getElementsByTagName('message')
@@ -77,11 +72,10 @@ if( $_GET['mode'] == "edit"){
             ->item(0)->nodeValue;
     }
 }
-else echo "<h1>新建笔记</h1>";
 ?>
       <br/>
       <div>
-      <form action = "process.php?old_pic=<?=$picture?>&a=<?=$_GET['a']?>" method = "post" enctype="multipart/form-data">
+      <form action = "process_share.php?old_pic=<?=$picture?>&a=<?=$_GET['a']?>" method = "post" enctype="multipart/form-data">
             <strong>标题：</strong><br/><input type = "text" name = "name1"
  value = "<?php echo $name; ?>" size='70%'/><br/>
             <strong>内容：</strong><br/><textarea name = "content" style

@@ -21,7 +21,7 @@ if(empty($_COOKIE['username']))
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
       <![endif]-->
 
-      <title>云笔记-修改密码</title>
+      <title>云笔记-分享管理</title>
   </head>
 
   <body>
@@ -61,66 +61,75 @@ if(empty($_COOKIE['username']))
       <div class="inner clearfix">
         <section id="main-content">
 
+          <h1>我的分享</h1>
 <?php
-if (empty($_POST)) {
-    echo "<h1>修改密码</h1>";
-?>
-  <form method='post' action='modpasswd.php'>
-  <table  border = '1'>
-<tr><td>原密码:</td><td><input type="password" name="passwd_old"
-placeholder="请输入原密码" align="left" size='60'/></td></tr>
-<tr><td>新密码:</td><td><input type="password" name="passwd_new1"
-placeholder="请输入新密码" align="left" size='60'/></td></tr>
-<tr><td>确认密码:</td><td><input type="password" name="passwd_new2"
-placeholder="请确认新密码" align="left" size='60'/></td></tr>
-<tr><td colspan="2"><input type="submit" value="确认修改" onclick="
-if(passwd_old.value.length==0){alert('旧密码不能为空!');return false;}
-else if(passwd_new1.value.length==0 || passwd_new2.value.length == 0){
-    alert('新密码不能为空!');return false;}else if
-        (passwd_new1.value!=passwd_new2.value){alert
-        ('两次密码不一样，请重新输入!');return false;}
-else{return true;}"/></td></tr>
-</table>
-  </form>
-<hr/>
-<?php
-} else {
-    $sno = $_COOKIE['username'];
-    $passwd_old = md5($_POST['passwd_old']);
-    $passwd_new1 = md5($_POST['passwd_new1']);
-
-    //连接数据库
-    $con = mysql_connect("localhost", "root", "12345678") 
-        or die("Could not connect!");
-    mysql_select_db("cloud_note_db", $con);
-
-    mysql_query('set names utf8');
-    $result = mysql_query("SELECT * FROM user WHERE sno = '$sno'");
-
-    $statue = 0;
-    while($row = mysql_fetch_array($result))
-    {
-        if($row['password'] == $passwd_old)
-        {
-            $statue = 1;
-            break;
-        }
-    }
-
-    if($statue == 0)
-    {
-        echo "<script>alert('旧密码错误,禁止修改密码！')</script>";
-        echo "<meta http-equiv='refresh' content='0;modpasswd.php'/>";
-        die;
-    } else {
-        mysql_query("UPDATE user SET password = '$passwd_new1' 
-            WHERE sno = '$sno'");
-        echo "<script>alert('密码修改成功!')</script>";
-        echo "<meta http-equiv='refresh' content='0;modpasswd.php'/>";
-    }
-    mysql_close($con);
+function avoid($value)
+{
+    $value = str_replace("<", "&lt;", $value);
+    $value = str_replace(">", "&gt;", $value);
+    $value = nl2br($value);
+    return $value;
 }
+echo "<table border = '1' class = 'bbs'>";
+echo "<tr><th style = 'width: 20%'>标题</th>
+    <th style = 'width: 30%'>图片</th>
+    <th style = 'width: 30%'>
+    內容</th><th style = 'width: 10%'>日期</th><th>操作</th></tr>";
+$doc = new DOMDocument();
+
+$filename = "data/share.xml";
+if (!file_exists($filename))
+{
+    $userxml = fopen($filename, "w") or die("Unable to open file!");
+    fwrite($userxml, 
+"<?xml version='1.0'?>\n<!DOCTYPE notes SYSTEM 'restrict.dtd'>\n<notes></notes>");
+    fclose($userxml);
+    chmod($filename, 0666);
+}
+
+$count = 0;
+if( $doc->load($filename) ){
+    $messages = $doc->getElementsByTagName('message');
+    $count = 0;
+    $hasmine = false;
+    foreach( $messages as $message ){
+
+        $name = $message->getElementsByTagName("name")->item(0);
+        $content = $message->getElementsByTagName("content")->item(0);
+        $time = $message->getElementsByTagName("time")->item(0);
+        $picture = $message->getElementsByTagName("picture")->item(0);
+        $author = $message->getElementsByTagName("author")->item(0);
+        $stuid = $message->getElementsByTagName("stuid")->item(0);
+
+        $name = avoid($name->nodeValue);
+        $content = avoid($content->nodeValue);
+        $time = avoid($time->nodeValue);
+        $picture = avoid($picture->nodeValue);
+        $author = avoid($author->nodeValue);
+        $stuid = avoid($stuid->nodeValue);
+
+        if ($stuid == $_COOKIE['username'])
+        {
+        echo "<tr><td> $name </td>";
+        echo "<td><a href='upload_file/$stuid/$picture'>
+            <img src='upload_file/$stuid/$picture' width='100%'/></a></td>";
+        echo "<td>" . $content . "</td>";
+        echo "<td>" . date("l dS \of F Y h:i:s A", $time) . "</td>";
+        echo "<td><a href = 'write_share.php?mode=edit&a=".$count."'>编辑</a>".
+            "<br/><a href = 'delete_share.php?mode=share&id=".$count."'>取消分享</a>";
+        $hasmine = true;
+        }
+        $count++;
+    }
+}
+if ($hasmine == false)
+{
+    echo "<tr><td colspan='5'>当前无您分享的笔记！</td></tr>";
+}
+echo "</table>";
 ?>
+
+
         </section>
 
         <aside id="sidebar">
@@ -128,7 +137,6 @@ else{return true;}"/></td></tr>
             <small>View all notes</small>
 查看笔记
           </a>
-
         <aside id="sidebar">
           <a href="write.php" class="button">
             <small>Create new note</small>
@@ -143,6 +151,7 @@ else{return true;}"/></td></tr>
         </aside>
       </div>
     </div>
+
 
   </body>
 </html>

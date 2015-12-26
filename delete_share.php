@@ -8,10 +8,11 @@ function avoid($value){
 
 $doc = new DOMDocument();
 $doc->formatOutput = true;
-$filename = "data/".$_COOKIE['username'].".xml";
+$filename = "data/share.xml";
 
+//将记录从share.xml中删除
 if( $doc->load($filename) ){
-    $deleteMessage = $doc->getElementsByTagName('message')->item((int)$_GET['a']);
+    $deleteMessage = $doc->getElementsByTagName('message')->item((int)$_GET['id']);
     $picture = $deleteMessage->getElementsByTagName("picture")->item(0);
     $picture = avoid($picture->nodeValue);
     if ($picture != "no_pic.jpg")
@@ -27,23 +28,5 @@ if( $doc->load($filename) ){
     $doc->save($filename);
 }
 
-//将share.xml中的文件也删除
-$doc = new DOMDocument();
-$doc->formatOutput = true;
-$filename = "data/share.xml";
-
-if( $doc->load($filename) ){
-    $messages = $doc->getElementsByTagName('message');
-
-    foreach( $messages as $message ){
-        $stuid = $message->getElementsByTagName("stuid")->item(0);
-        $stuid = avoid($stuid->nodeValue);
-        if ($stuid == $_COOKIE['username'])
-        {
-            $message = $doc->documentElement->removeChild($message);
-        }
-    }
-    $doc->save($filename);
-}
-echo "<meta http-equiv='refresh' content='0;home.php'/>";
+echo "<meta http-equiv='refresh' content='0;share_mng.php'/>";
 ?>
