@@ -17,11 +17,14 @@ if( $doc->load($filename) ){
     $picture = avoid($picture->nodeValue);
     if ($picture != "no_pic.jpg")
     {
-        if (unlink("upload_file/".$_COOKIE['username']."/$picture") == false)
+        if (stristr($picture, "_share"))
         {
-            echo "<meta charset='utf-8'>";
-            echo "<script>alert('笔记删除错误！')</script>";
-            echo "<meta http-equiv='refresh' content='0;home.html'/>";
+            if (unlink("upload_file/".$_COOKIE['username']."/$picture") == false)
+            {
+                echo "<meta charset='utf-8'>";
+                echo "<script>alert('笔记删除错误！')</script>";
+                echo "<meta http-equiv='refresh' content='0;home.html'/>";
+            }
         }
     }
     $deleteMessage = $doc->documentElement->removeChild($deleteMessage);

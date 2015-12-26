@@ -94,7 +94,7 @@ return false;}else{return true;}">查找</button>
     $keyword = trim($_GET['keyword']);
     $count = 0;
 
-    echo "<h1>搜索结果</h1>";
+    echo "<h1>搜索结果(我的笔记)</h1>";
     echo "<table border = '1' class = 'bbs'>";
     echo "<tr><th style = 'width: 20%'>标题</th>
         <th style = 'width: 30%'>图片</th>
@@ -133,6 +133,68 @@ return false;}else{return true;}">查找</button>
     }
 
     if ($count == 0)
+    {
+        echo "<tr><td colspan='5'>未搜索到关于'$keyword'的笔记！</td></tr>";
+    }
+    echo "</table>";
+
+    //这里是关于我分享的笔记的搜索结果
+    
+    $doc = new DOMDocument();
+
+    if( $doc->load("data/share.xml") ) {
+        $messages = $doc->getElementsByTagName('message');
+    }
+
+    $keyword = trim($_GET['keyword']);
+    $count = 0;
+    $hasmine = false;
+    echo "<h1>搜索结果(我分享的笔记)</h1>";
+    echo "<table border = '1' class = 'bbs'>";
+    echo "<tr><th style = 'width: 20%'>标题</th>
+        <th style = 'width: 30%'>图片</th>
+        <th style = 'width: 30%'>
+        內容</th><th style = 'width: 10%'>日期</th><th>操作</th></tr>";
+
+    foreach($messages as $message)
+    {
+        $name = $message->getElementsByTagName("name")->item(0);
+        $content = $message->getElementsByTagName("content")->item(0);
+        $time = $message->getElementsByTagName("time")->item(0);
+        $picture = $message->getElementsByTagName("picture")->item(0);
+        $stuid = $message->getElementsByTagName("stuid")->item(0);
+
+        $name = avoid($name->nodeValue);
+        $content = avoid($content->nodeValue);
+        $time = date("l dS \of F Y h:i:s A", avoid($time->nodeValue));
+        $picture = avoid($picture->nodeValue);
+        $stuid = avoid($stuid->nodeValue);
+        //这里只检测自己发布的分享笔记
+
+        if ($stuid == $_COOKIE['username'])
+        {
+            $contain_name = stristr($name, $keyword);
+            $contain_content = stristr($content, $keyword);
+            $contain_time = stristr($time, $keyword);
+            $contain_picture = stristr($picture, $keyword);
+
+            if (!empty($contain_name) || !empty($contain_content)
+                || !empty($contain_time || !empty($contain_picture)))
+            {
+                echo "<tr><td> $name </td>";
+                echo "<td><a href='upload_file/$stuid/$picture'>
+                    <img src='upload_file/$stuid/$picture' width='100%'/></a></td>";
+                echo "<td>" . $content . "</td>";
+                echo "<td>" . $time . "</td>";
+                echo "<td><a href = 'write_share.php?mode=edit&a=".$count."'>编辑</a>
+                    <br/><a href = 'delete_share.php?mode=share&id=".$count."'>取消分享</a>";
+                $hasmine = true;
+            }
+        }
+            $count++;
+    }
+
+    if ($hasmine == false)
     {
         echo "<tr><td colspan='5'>未搜索到关于'$keyword'的笔记！</td></tr>";
     }
