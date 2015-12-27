@@ -27,9 +27,10 @@ if ($statue == 1)
 {
     setcookie('username', $username, time() + 3600);
     setcookie('turename', $turename, time() + 3600);
-    echo "<meta http-equiv='refresh' content='0;home.php?username=$username'/>";
+    echo "<meta http-equiv='refresh' content='0;share.php'/>";
 }
 else {
+    echo "<meta charset='utf-8'>";
     echo "<script>alert('用户名或密码错误！')</script>";
     echo "<meta http-equiv='refresh' content='0;index.html'/>";
 }

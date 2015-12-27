@@ -173,11 +173,17 @@ if( $doc->load($shareshow) ){
         $author = avoid($author->nodeValue);
         $stuid = avoid($stuid->nodeValue);
 
-        echo "<tr><td> $name </td>";
+        if (strlen($content) > 100)
+        {
+            $content = substr($content, 0, 100);
+            $content = $content."......";
+        }
+
+        echo "<tr><td><a href='share_view.php?a=$count&stuid=$stuid'>$name</a></td>";
         echo "<td><a href='upload_file/$stuid/$picture'>
             <img src='upload_file/$stuid/$picture' width='100%'/></a></td>";
-        echo "<td>" . $content . "</td>";
-        echo "<td>" . date("l dS \of F Y h:i:s A", $time) . "</td>";
+        echo "<td><a href='share_view.php?a=$count&stuid=$stuid'>$content</a></td>";
+        echo "<td>" . date("l ds \of f y h:i:s a", $time) . "</td>";
         echo "<td><p>$author</p></td></tr>";
 
         $count++;
@@ -185,7 +191,7 @@ if( $doc->load($shareshow) ){
 }
 if ($count == 0)
 {
-    echo "<tr><td colspan='5'>当前无笔记！</td></tr>";
+    echo "<tr><td colspan='5'>当前无人共享笔记！</td></tr>";
 }
 echo "</table>";
 ?>

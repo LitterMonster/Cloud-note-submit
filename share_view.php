@@ -1,6 +1,7 @@
 <?php
 if(empty($_COOKIE['username']))
 {
+    echo "<meta charset='utf-8'>";
     echo "<script>alert('请先登陆！')</script>";
     echo "<meta http-equiv='refresh' content='0;index.html'/>";
     die;
@@ -21,7 +22,7 @@ if(empty($_COOKIE['username']))
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
       <![endif]-->
 
-      <title>云笔记-编辑分享笔记</title>
+      <title>云笔记-查看分享笔记</title>
   </head>
 
   <body>
@@ -61,8 +62,7 @@ if(empty($_COOKIE['username']))
       <div class="inner clearfix">
         <section id="main-content">
 <?php
-if( $_GET['mode'] == "edit"){
-    echo "<h1>编辑分享笔记</h1>";
+    echo "<h1>查看分享笔记</h1>";
     $doc = new DOMDocument();
     $filename = "data/share.xml";
 
@@ -75,37 +75,25 @@ if( $_GET['mode'] == "edit"){
             ->item(0)->nodeValue;
         $picture = $editMessage->getElementsByTagName('picture')
             ->item(0)->nodeValue;
+        $picture = $editMessage->getElementsByTagName('picture')
+            ->item(0)->nodeValue;
     }
-}
 ?>
       <br/>
       <div>
-      <form action = "process_share.php?old_pic=<?=$picture?>&a=<?=$_GET['a']?>" method = "post" enctype="multipart/form-data">
             <strong>标题：</strong><br/><input type = "text" name = "name1"
- value = "<?php echo $name; ?>" size='70%'/><br/>
+ value = "<?php echo $name; ?>" size='80%'/><br/>
             <strong>内容：</strong><br/><textarea name = "content" style
- = "width: 580px; height: 200px;"><?php echo $content; ?></textarea><br/>
-            <strong>图片:</strong></br>
+ = "width: 680px; height: 200px;"><?php echo $content; ?></textarea><br/>
 <?php
 if (!empty($picture) && $picture != "no_pic.jpg")
-    echo "<a href='upload_file/".$_COOKIE['username']."/$picture'><img src='upload_file/".$_COOKIE['username']."/$picture' width='805px'/></a>"
+{
+            echo "<strong>图片:</strong></br>";
+    echo "<a href='upload_file/".$_GET['stuid']."/$picture'><img src='upload_file/".$_GET['stuid']."/$picture' width='805px'/></a>";
+}
 ?>
-<input type="file" name="file"/>
-<input type="reset" name="res" value="重置"/></br>
 <br/>
-<?php 
-    if( $_GET['mode'] == "edit" ){ 
-        echo '<input type = "hidden" name = "mode" value = "edit">'; 
-        echo '<input type = "hidden" name = "a" value = "'. 
-            $_GET['a'] .'">'; 
-    }  
-?>
-            <button type = "submit" name="sub" onclick="
-                if(name1.value.length==0 && content.value.length ==0)
-                {alert('标题和内容不能都为空！');return false;}else{return true;}">完成</button>
-        </form>
       </div>
-
         </section>
 
         <aside id="sidebar">

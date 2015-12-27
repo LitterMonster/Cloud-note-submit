@@ -1,6 +1,7 @@
 <?php
 if(empty($_COOKIE['username']))
 {
+    echo "<meta charset='utf-8'>";
     echo "<script>alert('请先登陆！')</script>";
     echo "<meta http-equiv='refresh' content='0;index.html'/>";
     die;
@@ -118,13 +119,18 @@ if( $doc->load($filename) ){
         $time = avoid($time->nodeValue);
         $picture = avoid($picture->nodeValue);
 
-        echo "<tr><td> $name </td>";
-        echo "<td><a href='$dirname/$picture'>
-            <img src='$dirname/$picture' width='100%'/></a></td>";
-        echo "<td>" . $content . "</td>";
+        if (strlen($content) > 100)
+        {
+            $content = substr($content, 0, 100);
+            $content = $content."......";
+        }
+        echo "<tr><td>$name</td>";
+        echo "<td><a href='$dirname/$picture'>".
+            "<img src='$dirname/$picture' width='100%'/></a></td>";
+        echo "<td>$content</td>";
         echo "<td>" . date("l dS \of F Y h:i:s A", $time) . "</td>";
-        echo "<td><a href = 'write.php?mode=edit&a=".$count."'>编辑</a>
-            <br/><a href = 'delete.php?a=".$count."'>刪除</a>".
+        echo "<td><a href = 'write.php?mode=edit&a=".$count."'>编辑</a>".
+            "<br/><a href = 'delete.php?a=".$count."'>刪除</a>".
             "<br/><a href = 'share.php?mode=share&id=".$count."'>分享笔记</a>";
 
         $count++;

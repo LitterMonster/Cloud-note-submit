@@ -102,7 +102,7 @@ if( $doc->load($filename) ){
         $stuid = $message->getElementsByTagName("stuid")->item(0);
 
         $name = avoid($name->nodeValue);
-        $content = avoid($content->nodeValue);
+        $content = trim(avoid($content->nodeValue));
         $time = avoid($time->nodeValue);
         $picture = avoid($picture->nodeValue);
         $author = avoid($author->nodeValue);
@@ -110,10 +110,15 @@ if( $doc->load($filename) ){
 
         if ($stuid == $_COOKIE['username'])
         {
-        echo "<tr><td> $name </td>";
+        echo "<tr><td>$name</td>";
         echo "<td><a href='upload_file/$stuid/$picture'>
             <img src='upload_file/$stuid/$picture' width='100%'/></a></td>";
-        echo "<td>" . $content . "</td>";
+        if (strlen($content) > 100)
+        {
+            $content = substr($content, 0, 100);
+            $content = $content."......";
+        }
+        echo "<td>$content</td>";
         echo "<td>" . date("l dS \of F Y h:i:s A", $time) . "</td>";
         echo "<td><a href = 'write_share.php?mode=edit&a=".$count."'>编辑</a>".
             "<br/><a href = 'delete_share.php?mode=share&id=".$count."'>取消分享</a>";

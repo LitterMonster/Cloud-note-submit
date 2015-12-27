@@ -1,4 +1,5 @@
 <?php
+
 /*
 //为了更新share.xml中的内容，这里需要先将id的内容取出来
 //做对比，然后再同步
@@ -46,7 +47,8 @@ if( $share_doc->load($sharefile) ){
         $location++;
     }
 }
- */
+*/
+
 $doc = new DOMDocument();
 $doc->formatOutput = true;
 
@@ -78,6 +80,7 @@ if (isset($_POST['sub']))
         $tmp_name = $_FILES["file"]["tmp_name"];
         if ($_FILES["file"]["error"] > 0)
         {
+            echo "<meta charset='utf-8'>";
             echo "上传文件有误:".$_FILES["file"]["error"]."<br/>";
             die;
         } else {
@@ -85,6 +88,7 @@ if (isset($_POST['sub']))
                 "./upload_file/".$_COOKIE['username']."/$filename")){
                 //echo "$filename上传成功!";
             } else {
+                echo "<meta charset='utf-8'>";
                 echo $filename."上传失败";
                 die;
             }
@@ -108,6 +112,7 @@ $time = $message->appendChild($time);
 $content = $message->appendChild($content);
 $picture = $message->appendChild($picture);
 
+/*
 if ($state == true)
 {
     //var_dump($_POST);
@@ -155,6 +160,7 @@ if ($state == true)
 
     $doc->save($sharefile);
 }
+*/
 
 if ( $_POST['mode'] == "edit" ) {
     $replaceMessage = $doc->getElementsByTagName('message')
@@ -162,7 +168,8 @@ if ( $_POST['mode'] == "edit" ) {
     $replaceMessage = $replaceMessage->parentNode->replaceChild
         ($message, $replaceMessage);
 }
-else{
+else
+{
     $message = $root->appendChild($message);
 }
 

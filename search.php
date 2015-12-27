@@ -1,6 +1,7 @@
 <?php
 if(empty($_COOKIE['username']))
 {
+    echo "<meta charset='utf-8'>";
     echo "<script>alert('请先登陆！')</script>";
     echo "<meta http-equiv='refresh' content='0;index.html'/>";
     die;
