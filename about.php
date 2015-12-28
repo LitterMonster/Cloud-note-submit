@@ -66,7 +66,7 @@ if(empty($_COOKIE['username']))
     <p><h2>云笔记v0.01</h2></p>
 
 	  <h1>关于作者</h1>
-    <p><h2>张涛 13 软工A2 XML大作业</h2></p>
+    <p><h2>张涛 汤力 13 软工A2 XML大作业</h2></p>
 
 	  <h1>项目源码</h1>
     <p><a href="https://github.com/LitterMonster/Cloud-note-submit">

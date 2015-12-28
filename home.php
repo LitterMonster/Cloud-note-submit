@@ -119,6 +119,22 @@ if( $doc->load($filename) ){
         $time = avoid($time->nodeValue);
         $picture = avoid($picture->nodeValue);
 
+        $save_array[$count] = array(
+                "name" => $name,
+                "content" => $content,
+                "time" => $time,
+                "picture" => $picture,
+        );
+
+        $count++;
+    }
+    for ($temp = $count - 1; $temp >= 0; $temp--)
+    {
+        $name = $save_array[$temp]["name"];
+        $content = $save_array[$temp]["content"];
+        $time = $save_array[$temp]["time"];
+        $picture = $save_array[$temp]["picture"];
+
         if (strlen($content) > 100)
         {
             if ($content[99] > 127)
@@ -140,11 +156,10 @@ if( $doc->load($filename) ){
             "<img src='$dirname/$picture' width='100%'/></a></td>";
         echo "<td>$content</td>";
         echo "<td>" . date("l dS \of F Y h:i:s A", $time) . "</td>";
-        echo "<td><a href = 'write.php?mode=edit&a=".$count."'>编辑</a>".
-            "<br/><a href = 'delete.php?a=".$count."'>刪除</a>".
-            "<br/><a href = 'share.php?mode=share&id=".$count."'>分享笔记</a>";
+        echo "<td><a href = 'write.php?mode=edit&a=".$temp."'>编辑</a>".
+            "<br/><a href = 'delete.php?a=".$temp."'>刪除</a>".
+            "<br/><a href = 'share.php?mode=share&id=".$temp."'>分享笔记</a>";
 
-        $count++;
     }
 }
 if ($count == 0)

@@ -122,7 +122,6 @@ return false;}else{return true;}">查找</button>
         if (!empty($contain_name) || !empty($contain_content)
             || !empty($contain_time || !empty($contain_picture)))
         {
-            $count++;
             echo "<tr><td> $name </td>";
             echo "<td><a href='upload_file/$picture'>
                 <img src='upload_file/".$_COOKIE['username']."/$picture' width='100%'/></a></td>";
@@ -131,6 +130,7 @@ return false;}else{return true;}">查找</button>
             echo "<td><a href = 'write.php?mode=edit&a=".$count."'>编辑</a>
                 <br/><a href = 'delete.php?a=".$count."'>刪除</a>";
         }
+            $count++;
     }
 
     if ($count == 0)

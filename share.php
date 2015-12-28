@@ -1,6 +1,7 @@
 <?php
 if(empty($_COOKIE['username']))
 {
+    echo "<meta charset='utf-8'>";
     echo "<script>alert('请先登陆！')</script>";
     echo "<meta http-equiv='refresh' content='0;index.html'/>";
     die;
@@ -173,6 +174,26 @@ if( $doc->load($shareshow) ){
         $author = avoid($author->nodeValue);
         $stuid = avoid($stuid->nodeValue);
 
+        $save_array[$count] = array(
+                "name" => $name,
+                "content" => $content,
+                "time" => $time,
+                "picture" => $picture,
+                "author" => $author,
+                "stuid" => $stuid
+        );
+        $count++;
+    }
+
+    for ($temp = $count - 1; $temp >= 0; $temp--)
+    {
+        $name = $save_array[$temp]["name"];
+        $content = $save_array[$temp]["content"];
+        $time = $save_array[$temp]["time"];
+        $picture = $save_array[$temp]["picture"];
+        $author = $save_array[$temp]["author"];
+        $stuid = $save_array[$temp]["stuid"];
+
         if (strlen($content) > 100)
         {
             if ($content[99] > 127)
@@ -190,14 +211,13 @@ if( $doc->load($shareshow) ){
             $content = $content."......";
         }
 
-        echo "<tr><td><a href='share_view.php?a=$count&stuid=$stuid'>$name</a></td>";
+        echo "<tr><td><a href='share_view.php?a=$temp&stuid=$stuid'>$name</a></td>";
         echo "<td><a href='upload_file/$stuid/$picture'>
             <img src='upload_file/$stuid/$picture' width='100%'/></a></td>";
         echo "<td><a href='share_view.php?a=$count&stuid=$stuid'>$content</a></td>";
         echo "<td>" . date("l ds \of f y h:i:s a", $time) . "</td>";
         echo "<td><p>$author</p></td></tr>";
 
-        $count++;
     }
 }
 if ($count == 0)
