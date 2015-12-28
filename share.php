@@ -175,7 +175,18 @@ if( $doc->load($shareshow) ){
 
         if (strlen($content) > 100)
         {
-            $content = substr($content, 0, 100);
+            if ($content[99] > 127)
+            {
+                $content[96] = '';
+                $content[97] = '';
+                $content[98] = '';
+                $content[99] = '';
+                $content[100] = '';
+                $content[101] = '';
+                $content[102] = '';
+                $content[103] = '';
+            }
+            $content = substr($content, 0, 99);
             $content = $content."......";
         }
 

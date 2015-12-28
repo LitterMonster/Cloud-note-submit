@@ -74,7 +74,7 @@ if(empty($_COOKIE['username']))
 
 	</section>
 	<aside id="sidebar">
-          <a href="index.php" class="button">
+          <a href="home.php" class="button">
             <small>View all notes</small>
             查看笔记
           </a>

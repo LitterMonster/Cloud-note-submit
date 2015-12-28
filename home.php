@@ -115,13 +115,24 @@ if( $doc->load($filename) ){
         $picture = $message->getElementsByTagName("picture")->item(0);
 
         $name = avoid($name->nodeValue);
-        $content = avoid($content->nodeValue);
+        $content = (avoid($content->nodeValue));
         $time = avoid($time->nodeValue);
         $picture = avoid($picture->nodeValue);
 
         if (strlen($content) > 100)
         {
-            $content = substr($content, 0, 100);
+            if ($content[99] > 127)
+            {
+                $content[96] = '';
+                $content[97] = '';
+                $content[98] = '';
+                $content[99] = '';
+                $content[100] = '';
+                $content[101] = '';
+                $content[102] = '';
+                $content[103] = '';
+            }
+            $content = substr($content, 0, 99);
             $content = $content."......";
         }
         echo "<tr><td>$name</td>";

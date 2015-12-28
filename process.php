@@ -1,5 +1,4 @@
 <?php
-
 /*
 //为了更新share.xml中的内容，这里需要先将id的内容取出来
 //做对比，然后再同步
@@ -47,8 +46,7 @@ if( $share_doc->load($sharefile) ){
         $location++;
     }
 }
-*/
-
+ */
 $doc = new DOMDocument();
 $doc->formatOutput = true;
 
@@ -75,13 +73,15 @@ if (isset($_POST['sub']))
     if (!empty($_FILES["file"]["name"]))
     {
         $filename=$timestamp;
+        $filetype = strrchr($_FILES["file"]["name"],".");
         $filename.=strrchr($_FILES["file"]["name"],".");//上传文件的名称
 
         $tmp_name = $_FILES["file"]["tmp_name"];
         if ($_FILES["file"]["error"] > 0)
         {
             echo "<meta charset='utf-8'>";
-            echo "上传文件有误:".$_FILES["file"]["error"]."<br/>";
+            echo "<script>alert('上传文件超过了20M,上传终止！')</script>";
+            //echo "上传文件有误:".$_FILES["file"]["error"]."<br/>";
             die;
         } else {
             if(move_uploaded_file($tmp_name, 
@@ -89,7 +89,7 @@ if (isset($_POST['sub']))
                 //echo "$filename上传成功!";
             } else {
                 echo "<meta charset='utf-8'>";
-                echo $filename."上传失败";
+                echo "<script>alert('上传失败！')</script>";
                 die;
             }
         }
@@ -111,7 +111,6 @@ $name = $message->appendChild($name);
 $time = $message->appendChild($time);
 $content = $message->appendChild($content);
 $picture = $message->appendChild($picture);
-
 /*
 if ($state == true)
 {
@@ -160,16 +159,14 @@ if ($state == true)
 
     $doc->save($sharefile);
 }
-*/
-
+ */
 if ( $_POST['mode'] == "edit" ) {
     $replaceMessage = $doc->getElementsByTagName('message')
         ->item((int)$_POST['a']);
     $replaceMessage = $replaceMessage->parentNode->replaceChild
         ($message, $replaceMessage);
 }
-else
-{
+else{
     $message = $root->appendChild($message);
 }
 
