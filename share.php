@@ -214,7 +214,7 @@ if( $doc->load($shareshow) ){
         echo "<tr><td><a href='share_view.php?a=$temp&stuid=$stuid'>$name</a></td>";
         echo "<td><a href='upload_file/$stuid/$picture'>
             <img src='upload_file/$stuid/$picture' width='100%'/></a></td>";
-        echo "<td><a href='share_view.php?a=$count&stuid=$stuid'>$content</a></td>";
+        echo "<td><a href='share_view.php?a=$temp&stuid=$stuid'>$content</a></td>";
         echo "<td>" . date("l ds \of f y h:i:s a", $time) . "</td>";
         echo "<td><p>$author</p></td></tr>";
 

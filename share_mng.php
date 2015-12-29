@@ -92,6 +92,7 @@ if( $doc->load($filename) ){
     $messages = $doc->getElementsByTagName('message');
     $count = 0;
     $hasmine = false;
+
     foreach( $messages as $message ){
 
         $name = $message->getElementsByTagName("name")->item(0);
@@ -108,8 +109,31 @@ if( $doc->load($filename) ){
         $author = avoid($author->nodeValue);
         $stuid = avoid($stuid->nodeValue);
 
+
         if ($stuid == $_COOKIE['username'])
         {
+            $save_array[$count] = array(
+                    "name" => $name,
+                    "content" => $content,
+                    "time" => $time,
+                    "picture" => $picture,
+                    "author" => $author,
+                    "stuid" => $stuid
+            );
+            $hasmine = true;
+        }
+        $count++;
+    }
+
+    for ($temp = $count - 1; !empty($save_array[$temp]); $temp--)
+    {
+        $name = $save_array[$temp]["name"];
+        $content = $save_array[$temp]["content"];
+        $time = $save_array[$temp]["time"];
+        $picture = $save_array[$temp]["picture"];
+        $author = $save_array[$temp]["author"];
+        $stuid = $save_array[$temp]["stuid"];
+
         echo "<tr><td>$name</td>";
         echo "<td><a href='upload_file/$stuid/$picture'>
             <img src='upload_file/$stuid/$picture' width='100%'/></a></td>";
@@ -129,13 +153,11 @@ if( $doc->load($filename) ){
             $content = substr($content, 0, 99);
             $content = $content."......";
         }
+
         echo "<td>$content</td>";
         echo "<td>" . date("l dS \of F Y h:i:s A", $time) . "</td>";
-        echo "<td><a href = 'write_share.php?mode=edit&a=".$count."'>编辑</a>".
-            "<br/><a href = 'delete_share.php?mode=share&id=".$count."'>取消分享</a>";
-        $hasmine = true;
-        }
-        $count++;
+        echo "<td><a href = 'write_share.php?mode=edit&a=".$temp."'>编辑</a>".
+            "<br/><a href = 'delete_share.php?mode=share&id=".$temp."'>取消分享</a>";
     }
 }
 if ($hasmine == false)
