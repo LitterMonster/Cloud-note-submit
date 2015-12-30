@@ -153,7 +153,6 @@ if( $doc->load($filename) ){
             $content = substr($content, 0, 99);
             $content = $content."......";
         }
-
         echo "<td>$content</td>";
         echo "<td>" . date("l dS \of F Y h:i:s A", $time) . "</td>";
         echo "<td><a href = 'write_share.php?mode=edit&a=".$temp."'>编辑</a>".

@@ -27,6 +27,26 @@ if ($statue == 1)
 {
     setcookie('username', $username, time() + 3600);
     setcookie('turename', $turename, time() + 3600);
+    //将用户的登陆信息写入当天日志
+    $date = date(DATE_RFC822);
+    $daylog = "logs/".date('Y-m-d').".log"; 
+    if (!file_exists($daylog))
+    {
+        $log = fopen($daylog, "w") or die("Unable to open file!");
+        fwrite($log,
+            "=================Date:$date=============\n");
+        fwrite($log,"Create&Login----Date:$date----stuid:"
+            ."$username----username:$turename\n");
+        fclose($log);
+        chmod($log, 0666);
+    }
+    else
+    {
+        $log = fopen($daylog, "a") or die("Unable to open file!");
+        fwrite($log,"Login----Date:$date----stuid:"
+            ."$username----username:$turename\n");
+        fclose($log);
+    }
     echo "<meta http-equiv='refresh' content='0;share.php'/>";
 }
 else {

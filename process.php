@@ -47,6 +47,7 @@ if( $share_doc->load($sharefile) ){
     }
 }
  */
+
 $doc = new DOMDocument();
 $doc->formatOutput = true;
 
@@ -160,6 +161,7 @@ if ($state == true)
     $doc->save($sharefile);
 }
  */
+
 if ( $_POST['mode'] == "edit" ) {
     $replaceMessage = $doc->getElementsByTagName('message')
         ->item((int)$_POST['a']);
